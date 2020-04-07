@@ -10,16 +10,16 @@ class Calculator:
         self.records.append(record_class)
 
     def get_today_stats(self):
-        self.today_stats = 0                                                            #Creating a variable
+        self.today_stats = 0                                              #Creating a variable
         for self.record in self.records:
-            if self.record.date == dt.datetime.now().date():                            #Checking if the date is today.
+            if self.record.date == dt.datetime.now().date():              #Checking if the date is today.
                 self.today_stats += self.record.amount
-        return self.today_stats                                                         #Returning stats of spent money for today.
+        return self.today_stats                                           #Returning stats of spent money for today.
 
     def get_week_stats(self):
         self.week_amount = 0
         self.date_now = dt.datetime.now()
-        self.date_week_ago = self.date_now - dt.timedelta(days = 7) #узнаём, время неделю назад
+        self.date_week_ago = self.date_now - dt.timedelta(days = 7)       #узнаём, время неделю назад
         for self.record in self.records:
             if self.record.date > self.date_week_ago.date():
                 self.week_amount += self.record.amount
@@ -47,7 +47,7 @@ class CashCalculator(Calculator):
     def get_today_cash_remained(self, currency = None):
         self.spent_money = self.get_today_stats()
         self.cash_remainder = self.limit - self.spent_money #Calculating the remainder
-        self.cash_remainder = float(self.cash_remainder) #Transforming remainder into float, if we get a non-float
+        self.cash_remainder = float(self.cash_remainder)    #Transforming remainder into float type, if we get a non-float
         #branching, for different currencies
         if currency == "rub":
             if self.cash_remainder > 0:
@@ -83,7 +83,7 @@ class Record(Calculator):
         # Checking the data type of date.
         if date is None:        #Request current time and transform it via .date method to the suitable format
             self.date = (dt.datetime.now()).date()
-        else:                   # if we get a string of time, reformat it into the given format using strptime.
+        else:                   # if we get a string of time, reformat it into the required format using strptime.
                                 #.date transform it into suitable format of datetime-type
             self.date = (dt.datetime.strptime(self.date, self.date_format)).date()
 
