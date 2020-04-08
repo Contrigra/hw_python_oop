@@ -40,39 +40,24 @@ class CaloriesCalculator(Calculator):
 class CashCalculator(Calculator):
     EURO_RATE = 70.0
     USD_RATE = 60.0
+    RUB_RATE = 1
+    currency_data = {"eur": (EURO_RATE, "Euro"), "usd": (USD_RATE, "USD"), "rub": (RUB_RATE, "руб")}
+
     def get_today_cash_remained(self, currency):
         spent_money = self.get_today_stats()
-        cash_remainder = self.limit - spent_money  #Calculating the remainder
-        cash_remainder = float(cash_remainder)  #Transforming remainder into float
-        #branching, for different currencies
-        if currency == "rub":    # TODO rewrite using dictionary
-            if cash_remainder > 0:
-                return f"На сегодня осталось {round(cash_remainder, 2)} руб"
-            elif cash_remainder == 0:
-                return f"Денег нет, держись"
-            elif cash_remainder < 0:
-                return f"Денег нет, держись: твой долг - {abs(round(cash_remainder, 2))} руб"
-        elif currency == "eur":
-            cash_remainder = cash_remainder / self.EURO_RATE
-            if cash_remainder > 0:
-                return f"На сегодня осталось {round(cash_remainder, 2)} Euro"
-            elif cash_remainder == 0:
-                return f"Денег нет, держись"
-            elif cash_remainder < 0:
-                return f"Денег нет, держись: твой долг - {abs(round(cash_remainder, 2))} Euro"
-        elif currency == "usd":
-            cash_remainder = cash_remainder / self.USD_RATE
-            if cash_remainder > 0:
-                return f"На сегодня осталось {round(cash_remainder, 2)} USD"
-            elif cash_remainder == 0:
-                return f"Денег нет, держись"
-            elif cash_remainder < 0:
-                return f"Денег нет, держись: твой долг - {abs(round(cash_remainder, 2))} USD"
+        cash_remainder = (self.limit - spent_money) / self.currency_data[currency][0]  #Calculating the remainder
+        cash_remainder = float(cash_remainder) #fi we receive non-float
+        if cash_remainder > 0:
+            return f"На сегодня осталось {round(cash_remainder, 2)} {self.currency_data[currency][1]}"
+        if cash_remainder == 0:
+            return f"Денег нет, держись"
+        if cash_remainder < 0:
+            return f"Денег нет, держись: твой долг - {abs(round(cash_remainder, 2))} {self.currency_data[currency][1]}"
 
 
 class Record(Calculator):
     def __init__(self, amount, comment, date = None):
-        self.date_format = "%d.%m.%Y"
+        date_format = "%d.%m.%Y"
         self.amount = amount
         self.comment = comment
         self.date = date
@@ -80,4 +65,4 @@ class Record(Calculator):
         if date is None:        # Request current time and transform it via .date method to the suitable format
             self.date = (dt.datetime.now()).date()
         else:                   # Reformat string of time to the desired format
-            self.date = (dt.datetime.strptime(self.date, self.date_format)).date()
+            self.date = (dt.datetime.strptime(date, date_format)).date()
