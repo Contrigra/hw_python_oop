@@ -45,8 +45,8 @@ class CashCalculator(Calculator):
 
     def get_today_cash_remained(self, currency):
         spent_money = self.get_today_stats()
-        cash_remainder = (self.limit - spent_money) / self.currency_data[currency][0]  #Calculating the remainder
-        cash_remainder = float(cash_remainder) #fi we receive non-float
+        cash_remainder = (self.limit - spent_money) / self.currency_data[currency][0]  # Calculating the remainder
+        cash_remainder = float(cash_remainder)  # fi we receive non-float
         if cash_remainder > 0:
             return f"На сегодня осталось {round(cash_remainder, 2)} {self.currency_data[currency][1]}"
         if cash_remainder == 0:
@@ -56,7 +56,7 @@ class CashCalculator(Calculator):
 
 
 class Record(Calculator):
-    def __init__(self, amount, comment, date = None):
+    def __init__(self, amount, comment, date=None):
         date_format = "%d.%m.%Y"
         self.amount = amount
         self.comment = comment
