@@ -79,4 +79,3 @@ class Record(Calculator):
             self.date = (dt.datetime.now()).date()
         else:               # Reformat string of time to the desired format
             self.date = (dt.datetime.strptime(date, date_format)).date()
-
